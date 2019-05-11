@@ -6,9 +6,8 @@
  to specify a number and it will build an object of letters based on the shift number.
  In general caesars ciphers was a shift in 13 to the right.
  Now you can shift in any amount up to the letters of the alphabet.
- I believe if I added a bigger number that is greater than the alphabet
- number, the function will break. I could have added a condition but this
- solves my immediate problem. I wanted to be able to write my rot13
+ Switching to mod operator allows to add any number greater than 26 to shift.
+ I wanted to be able to write my rot13
  function with the ability to specify a shift amount. Function only works for capitals.
 
  Below the cipher shifter function is the rot13 function with only the capability to shift by 13.
@@ -19,7 +18,7 @@ function ciphershifter(num){
   let shiftObj = arr.reduce(function(acc, curr, i){
     let place = i + num;
     if(place > 25){
-      place = place - 26;
+      place = place % 26;
     }
     // console.log(curr, i, num, place)
     acc[curr] = arr[place]
