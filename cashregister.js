@@ -9,6 +9,10 @@
 // ["TWENTY", 60],
 // ["ONE HUNDRED", 100]]
 
+// Need to add the CID functionality
+// Main functionality is done. Gives Money
+// Might be a better way to write my code with only arrays
+
 function checkCashRegister(price, cash, cid) {
   let change = (cash * 100) - (price * 100);
   let output = {status: null, change: change};
