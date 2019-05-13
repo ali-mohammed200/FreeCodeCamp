@@ -15,7 +15,7 @@
 
 function checkCashRegister(price, cash, cid) {
   let change = (cash * 100) - (price * 100);
-  let output = {status: null, change: change};
+  let output = {status: null, change: []};
   let cashObj = cashConverter();
 
   cid.forEach(currency => {
@@ -24,7 +24,6 @@ function checkCashRegister(price, cash, cid) {
     });
 
   let max = null;
-  let tempHolder = [];
 
   let i = 0;
   while (i < cid.length){
@@ -33,10 +32,12 @@ function checkCashRegister(price, cash, cid) {
       max = cashObj[curr].value;
     }
 
-    if (change >= cashObj[curr].value && change <= max){
-      tempHolder.push(curr);
+    if (change >= cashObj[curr].value && change <= max && cashObj[curr].amount > 0){
+      output.change.push(curr);
       cashObj[curr].amount--;
       change -= cashObj[curr].value;
+    } else if (change >= cashObj[curr].value && change <= max && cashObj[curr].amount <= 0){
+      i -= 1;
     } else if (change >= cashObj[curr].value){
       max = cashObj[curr].value;
       i += 1;
@@ -45,14 +46,21 @@ function checkCashRegister(price, cash, cid) {
       i -= 1;
     }
 
-    if (change <= 0){
+    if (change <= 0 && cashObj[curr].amount <= 0) {
+      output.status = "CLOSED";
+      break;
+    } else if (change <= 0){
+      output.status = "OPEN"
+      break;
+    } else if (i < 0) {
+      output.status = "INSUFFICIENT_FUNDS"
       break;
     }
-    // debugger;
+    debugger;
   }
 
   // Here is your change, ma'am.
-  return tempHolder;
+  return output;
 }
 
 function cashConverter() {
@@ -69,5 +77,5 @@ function cashConverter() {
   };
 }
 
-console.log(checkCashRegister(19.84, 20, [["PENNY", 1.01], ["NICKEL", 2.05], ["DIME", 3.1], ["QUARTER", 4.25], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
+console.log(checkCashRegister(19.71, 20, [["PENNY", 0], ["NICKEL", 0], ["DIME", 0], ["QUARTER", 0], ["ONE", 90], ["FIVE", 55], ["TEN", 20], ["TWENTY", 60], ["ONE HUNDRED", 100]]));
 console.log((2.05/0.05).toPrecision(4));
