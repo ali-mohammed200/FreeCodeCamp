@@ -40,7 +40,7 @@ function checkCashRegister(price, cash, cid) {
 
     if (change < .01 && cashObj[curr].amount <= 0) {
       output.status = "CLOSED";
-      output.change = objtoArrformat(cashReverter(output.change));
+      output.change = cid;
       break;
     } else if (change < .01){
       output.status = "OPEN"
@@ -51,7 +51,7 @@ function checkCashRegister(price, cash, cid) {
       output.change = [];
       break;
     }
-     debugger;
+     //debugger;
   }
 
   // Here is your change, ma'am.
@@ -60,15 +60,15 @@ function checkCashRegister(price, cash, cid) {
 
 function cashReverter(arr) {
 	let cashConvertObj = cashConverter();
-      let reduced = arr.reduce(function (allNames, name) {
-          if (name in allNames) {
-            allNames[name]++;
-          }
-          else {
-            allNames[name] = 1;
-          }
-          return allNames;
-        }, {});
+  let reduced = arr.reduce(function (allNames, name) {
+      if (name in allNames) {
+        allNames[name]++;
+      }
+      else {
+        allNames[name] = 1;
+      }
+      return allNames;
+    }, {});
 	for(let currency in reduced){
 		reduced[currency] = reduced[currency] * cashConvertObj[currency].value;
 	}
